@@ -4,11 +4,9 @@ Encoding.default_external = "utf-8"
 #抽選ナンバーと名前の取得
 #person_hashはキーとして抽選ナンバー、値として名前を持つハッシュ
 person_hash = Hash.new
-i = 0
 while person_data_line = gets
   person_data_line = person_data_line.chomp
   key,person_hash[key] = person_data_line.split(/,/)
-  i = i + 1
 end
 
 #抽選
