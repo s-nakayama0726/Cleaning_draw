@@ -1,7 +1,10 @@
 データベースには
 id,name,draw_no,join_flag
 の４つの項目を用意する
-また、データベース名はcleaning_entryDBとする。
+なお、デフォルト値は以下の値とする
+id：railsの機能により自動生成されるid値を使用
+draw_no:0
+join_flag:0
 
 －id,name：
 参加の可能性のある社員を予め登録しておき、ユーザーログインの際に使用する。
