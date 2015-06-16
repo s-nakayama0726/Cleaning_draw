@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>user_already_entry</title>
+		<meta name="author" content="shingo" />
+		<!-- Date: 2015-06-15 -->
+	</head>
+	<body>
+		<div align="center">
+		<h1>お掃除抽選エントリー確認画面</h1>
+		<p>既にエントリーは完了しております</p>
+		<p>今日の<%= session[:name] %>さんの抽選ナンバーは</p><br>
+			<font size="7"><%= session[:draw_no] %></font>です。<br>
+		<p>結果発表は本日１５：３０です。発表まで少々お待ちください。</p>
+		<%= link_to "トップへ戻る", root_path %>
+		</form>
+	</body>
+</html>

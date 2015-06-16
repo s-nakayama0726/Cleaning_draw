@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>user_top</title>
+		<meta name="author" content="shingo" />
+		<!-- Date: 2015-06-12 -->
+	</head>
+	<body>
+	<div align="center"><br>
+	<h1>お掃除抽選アプリ</h1>
+	<%= form_tag('/draw/user_show') do %>
+	名前選択
+
+	<%= select_tag 'entry[id]', options_for_select(@entry.map{ |entry| [entry.name, entry.id]}) %>
+	
+	<%= submit_tag "ログイン" %><br><br><br><br>
+	<% end %>
+	<table>
+	<tr><td>お掃除抽選方法説明</td></tr>
+	<tr><td>①上の名前選択プルダウンメニューから自分の名前を選択し、ログインします</td></tr>
+	<tr><td>②お掃除抽選画面で番号を引くボタンを押します</td></tr>
+	<tr><td>③抽選ナンバー表示画面で自分の抽選ナンバーを確認しましょう</td></tr>
+	<tr><td>　抽選に参加した人の中で一番小さい抽選ナンバーを持つ人が掃除機当番、</td></tr>
+	<tr><td>　一番大きい抽選ナンバーを持つ人が拭き掃除当番です</td></tr>
+	<tr><td>④結果は15:30頃発表予定です</td></tr>
+	</table>
+	</div>
+	</body>
+</html>
+
