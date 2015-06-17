@@ -26,5 +26,14 @@ class DrawController < ApplicationController
     params.require(:entry).permit(:name, :id)
   end
   
-
+  def master_top
+      @entry = CleaningEntry.all
+      @rand_num = (1..100).to_a.sort_by{rand}[1..@entry.size]
+      
+      @rand_num.size.times do |i|
+        @entry[i].draw_no = @rand_num[i]
+        @entry[i].join_flag = 0
+        @entry[i].save
+      end
+  end
 end
