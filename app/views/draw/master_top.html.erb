@@ -1,35 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-
 <script type="text/javascript">
 	function draw_check(){
 		alert("割り当てが完了しました");
 	}
 </script>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>master_top</title>
-		<meta name="author" content="shingo" />
-		<!-- Date: 2015-06-12 -->
-	</head>
-	<body>
-	<div align="center">
-		<h1>お掃除抽選アプリ管理者メニュー</h1>
-			<%= button_tag type: 'button', onclick: "draw_check();link_to('#{draw_master_top_path}');" do %>
-				<%= "抽選ナンバー割り当て"  %>
-			<% end %>
-			<br>
-			※ボタン押下で”割り当てが完了しました”というポップアップ表示。<br>
-			データベースに登録されている人のdraw_noの値がランダムに割り当てられる<br><br>
-			<form method="post" action="master_draw_result.html">
-			<input type="submit" value="抽選実行"><br>
-			</form>
-			※ボタン押下で結果がポップアップ表示<br>
-			さらに該当者にメールが送信される<br>
-	</div>
-	</body>
-</html>
+<div align="center"><br>
+	<h1>お掃除抽選アプリ</h1><br>
+	<h2>管理者メニュー</h2><br>
+	<%= button_tag type: 'button', onclick: "draw_check();location.href='#{draw_master_top_path}';" do %>
+		<%= "抽選ナンバー割り当て"  %>
+	<% end %>
+	<br>
+	※ボタン押下で”割り当てが完了しました”というポップアップ表示。<br>
+	データベースに登録されている人のdraw_noの値がランダムに割り当てられる<br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_draw_result_path}'" do %>
+		<%= "抽選実行"  %>
+	<% end %>
+	<br>
+	※ボタン押下で結果がポップアップ表示<br>
+	さらに該当者にメールが送信される<br>
+</div>
+
 
 

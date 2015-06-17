@@ -1,0 +1,15 @@
+<div align="center"><br>
+	<h1>お掃除抽選アプリ</h1><br>
+	<h2>お掃除抽選結果</h2><br>
+	<p>掃除機当番は</p><br>
+	抽選ナンバー<font size="7"><%= @vacuum_cleaner_person[0] %></font>の<font size="7"><%= @vacuum_cleaner_person[1] %></font>さんです</p><br>
+	<p>拭き掃除当番は</p><br>
+	抽選ナンバー<font size="7"><%= @wipe_person[0] %></font>の<font size="7"><%= @wipe_person[1] %></font>さんです</p><br>
+	<p>おめでとうございます</p>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>
+		<%= "管理者トップに戻る"  %>
+	<% end %>
+	<br>
+<br>
+</div>
+

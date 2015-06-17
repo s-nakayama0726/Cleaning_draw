@@ -3,7 +3,6 @@
 class DrawController < ApplicationController
   def user_index
     @entry = CleaningEntry.all
-    @rand_num = (1..100).to_a.sort_by{rand}[0..@entry.size]
   end
   
   def user_result
@@ -36,4 +35,6 @@ class DrawController < ApplicationController
         @entry[i].save
       end
   end
+  
+
 end
