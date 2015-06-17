@@ -3,6 +3,7 @@
 class DrawController < ApplicationController
   def user_index
     @entry = CleaningEntry.all
+    @rand_num = (1..100).to_a.sort_by{rand}[0..@entry.size]
   end
   
   def user_result
@@ -21,9 +22,9 @@ class DrawController < ApplicationController
     end
   end
 
-
-  
   def user_params
     params.require(:entry).permit(:name, :id)
   end
+  
+
 end

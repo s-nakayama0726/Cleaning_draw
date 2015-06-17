@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
+  post "draw/user_show" => "draw#user_show"
   put 'draw/user_result'
   get 'draw/user_already_result'
-  post "draw/user_show" => "draw#user_show"
-  get 'draw/user_index'
-
+  get "draw/user_index"
+  get 'draw/master_top'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

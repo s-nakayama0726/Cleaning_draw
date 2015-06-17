@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CleaningDrawPage</title>
+  <meta charset="utf-8">
+  <title>Study</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-
-<%= yield %>
-
+<body class='<%= controller.controller_name %>'>
+<div id="wrap">
+	<header id="header">
+		<div class="inner">
+		</div>
+	</header>
+	
+	<div id="main">
+		<%= yield %>
+	</div>
+	
+	</div>
 </body>
 </html>
