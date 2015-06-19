@@ -1,0 +1,42 @@
+①ユーザー登録、変更、削除、更新機能：１人日（6/19,22)
+ userの登録更新変更削除を行うURLをresourcesにより取得し、与えられたURLに沿ってそれぞれ実装
+ 
+②master_top画面で現在のエントリー状況確認リストの表示機能:0.5人日(6/22)
+　cleaning_entryDBに登録されている全ユーザーのnameとjoin_flagを取得し、
+　join_flagが立っている人はエントリー済み枠、立っていない人は未エントリー枠にそれぞれ表示
+
+③管理画面でのベーシック認証設定:0.5人日(6/23)
+　http://qiita.com/mats116/items/5e2e8424a3d0c939eb11
+　を参考にmaster_topアクションにbasic認証を実装
+　初期ID：master、初期パスワード：master
+
+④user_index画面でログイン機能追加（ID・PW入力）:1人日(6/23~24)
+　データベースにユーザーIDカラム、PWカラムを追加する（デフォルトユーザーID：user、デフォルトPW：user)
+　入力されたユーザーIDがcleaning_entryDBに存在するか
+　　　＞存在した場合：入力されたパスワードが正しいか
+　　　　　＞正しい場合：ログイン認証を完了とし、ユーザーIDをセッションに格納した後、user_resultアクションを実行
+   　　＞どこかでエラーが起こった場合：”ユーザーIDもしくはパスワードが正しくありません”と表示するuser_login_err.html.erbテンプレートをrenderする
+　ID、パスワード変更ページを作成
+   
+⑤user_show画面で既にくじを引いた人の結果リストを表示（ナンバー昇順）:0.5人日(6/24)
+ 　cleaning_entryDBに登録されている全ユーザーのnameとdraw_noとjoin_flagを取得し、
+ 　join_flagが立っている人のみ、nameとdraw_noの値を表示
+ 　sortメソッドを利用し、draw_noの昇順で表示する
+ 
+⑥user_result画面で既にくじを引いた人の結果リストを表示（ナンバー昇順、ログインユーザー情報は（青文字））:0.5人日(6/25)
+ 　cleaning_entryDBに登録されている全ユーザーのnameとdraw_noとjoin_flagとuser_idを取得し、
+ 　join_flagが立っている人のみ、nameとdraw_noの値を表示
+ 　sortメソッドを利用し、draw_noの昇順で表示する
+ 　また、表示の際テーブルから取得したuser_idとセッションに格納したuser_idとを比較し、一致した場合のみ
+ 　ほかの人とは区別して表示（末尾に”←you!"と表示）
+
+⑦テーブルに登録されているユーザー全員がくじを引いた場合、自動的に抽選する機能：１人日(6/25~26)
+　user_resultアクションを実行した際、dbから取得した全ユーザー情報を格納した配列entry_arr.sizeと、join_flagが立っている人の
+　ユーザー情報を格納した配列already_entry.sizeの値が等しくなっているかの比較を行う
+　結果がtrueなら、抽選結果をuser_index画面へ結果を表示する
+
+⑧当選者へのメール通知機能:1人日(6/26,29)
+　http://ruby-rails.hatenadiary.com/entry/20140828/1409236436
+　 を参考に当選者に結果メールを送信する
+　 cleaning_entryDBにmailカラムを追加する
+　 なお、抽選タイミングはmaster_draw_resultアクションが実行された時

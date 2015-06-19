@@ -2,7 +2,7 @@
 
 ・データベース構築(table_idea.txt参照）
 
-①ログイン機能：1
+①ログイン機能：
 cleaning_entryDBに登録されている全ユーザーのnameを取得し、user_top画面のログイン用プルダウンメニューに表示する
 また、user_top画面でログインしたユーザーのIDから、cleaning_entryDBに登録されている情報を取得する
 
