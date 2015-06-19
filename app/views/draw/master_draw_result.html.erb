@@ -1,11 +1,16 @@
 <div align="center"><br>
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>お掃除抽選結果</h2><br>
-	<p>掃除機当番は</p><br>
-	抽選ナンバー<font size="7"><%= @vacuum_cleaner_person[0] %></font>の<font size="7"><%= @vacuum_cleaner_person[1] %></font>さんです</p><br>
-	<p>拭き掃除当番は</p><br>
-	抽選ナンバー<font size="7"><%= @wipe_person[0] %></font>の<font size="7"><%= @wipe_person[1] %></font>さんです</p><br>
-	<p>おめでとうございます</p>
+	<% unless @entry_arr.size > 2 %>
+		<p>3人以上のエントリーを受け付けていない為、抽選を行うことができません</p>
+		<p>エントリー漏れをご確認頂き、再度抽選を行って下さい。</p>
+	<% else %>
+		<p><font color="blue" size="5">掃除機当番</font>は</p><br>
+		抽選ナンバー<font color="blue" size="7"><%= @vacuum_cleaner_person[1] %></font>の<font color="blue" size="7"><%= @vacuum_cleaner_person[2] %></font>さんです</p><br>
+		<p><font color="red" size="5">拭き掃除当番</font>は</p><br>
+		抽選ナンバー<font color="red" size="7"><%= @wipe_person[1] %></font>の<font color="red" size="7"><%= @wipe_person[2] %></font>さんです</p><br>
+		<p>おめでとうございます</p>
+	<% end %>
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>
 		<%= "管理者トップに戻る"  %>
 	<% end %>

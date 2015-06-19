@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "draw/user_index"
   get 'draw/master_top'
   get 'draw/master_draw_result'
+  get 'draw/master_draw'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

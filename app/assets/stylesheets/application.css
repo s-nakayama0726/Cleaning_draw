@@ -46,3 +46,9 @@ div#lecture{
 td{
 	height:40px;
 }
+
+select#entry_id{
+	width: 100px;
+	height: 28px;
+}
+
