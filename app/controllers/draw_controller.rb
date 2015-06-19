@@ -16,7 +16,7 @@ class DrawController < ApplicationController
     session[:id] = @entry.id
     session[:name] = @entry.name
     session[:draw_no] = @entry.draw_no
-    if @entry.join_flag == 1
+    if @entry.join_flag >= 1
       render 'user_already_result'
     end
   end
@@ -38,9 +38,11 @@ class DrawController < ApplicationController
         @entry[i].save
       end
       
+      session[:vacuum_cleaner_person] = nil
+      
       render 'master_top'
   end
-  
+
   def master_draw_result
     @entry = CleaningEntry.all
     @entry_arr = @entry.map{ |entry| [entry.join_flag, entry.draw_no, entry.name] }
@@ -50,10 +52,19 @@ class DrawController < ApplicationController
       item[0] == 0
     }
     
-    @entry_arr.sort!
-    @vacuum_cleaner_person = @entry_arr[0]
-    @entry_arr.reverse!
-    @wipe_person = @entry_arr[0]
+    if session[:vacuum_cleaner_person] == nil
+    
+      @vacuum_cleaner_person,@wipe_person = @entry_arr.sample(2)
+      session[:vacuum_cleaner_person] = @vacuum_cleaner_person
+      session[:wipe_person] = @wipe_person
+     
+    else 
+      
+      @vacuum_cleaner_person = session[:vacuum_cleaner_person]
+      @wipe_person = session[:wipe_person]
+    
+    end
+    
     render 'master_draw_result'
   end
   
