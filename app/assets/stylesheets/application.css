@@ -22,9 +22,9 @@ div#main {
 	margin-top: 100px;
 	margin-left: auto;
 	margin-right: auto;
+	margin-bottom: 100px;
 	background-color: white;
 	width:600px;
-	height:600px;
 }
 
 h1{
@@ -41,6 +41,7 @@ h2{
 div#lecture{
 	border: black 1px solid;
 	width:550px;
+	margin-bottom: 50px;
 }
 
 td{
