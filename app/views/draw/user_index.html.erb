@@ -9,14 +9,17 @@
 	<%= submit_tag "ログイン" %><br><br><br><br>
 	<% end %>
 	<div id="lecture">
-	<table>
+	<table id='lecture'>
 	<tr><td>お掃除抽選方法説明</td></tr>
 	<tr><td>①上の名前選択プルダウンメニューから自分の名前を選択し、ログインします</td></tr>
 	<tr><td>②お掃除抽選画面で番号を引くボタンを押します</td></tr>
 	<tr><td>③抽選ナンバー表示画面で自分の抽選ナンバーを確認しましょう<br>
 	<tr><td>④結果は15:30頃発表予定です</td></tr>
 	</table>
-	</div>
+	</div><br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>
+		<%= "管理者メニュー"  %>
+	<% end %><br>
 </div>
 
 

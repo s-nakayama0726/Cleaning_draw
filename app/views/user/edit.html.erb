@@ -1,0 +1,12 @@
+<div align="center">
+<h1>お掃除抽選アプリ</h1><br>
+<h2>ユーザー情報編集画面</h2>	<br>
+<%= form_tag(user_path(@user), :method => :put) do %>
+  <p>
+    <%= text_field :user, :name %>
+  </p>
+  <%= submit_tag "変更" %>
+<% end %>
+<br>
+<%= link_to 'トップに戻る', user_index_path %>
+</div>

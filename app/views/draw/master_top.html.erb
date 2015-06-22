@@ -18,7 +18,16 @@
 	<% end %>
 	<br>
 	※ボタン押下で結果がポップアップ表示<br>
-	さらに該当者にメールが送信される<br>
+	さらに該当者にメールが送信される<br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{user_index_path}'" do %>
+		<%= "ユーザー管理"  %>
+	<% end %><br>
+	※ユーザー管理画面に遷移する
+	<br><br><br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_index_path}'" do %>
+		<%= "戻る"  %>
+	<% end %><br>
+	※お掃除抽選アプリトップ画面に遷移する
 </div>
 
 

@@ -43,8 +43,12 @@ div#lecture{
 	width:550px;
 }
 
-td{
+table#lecture td{
 	height:40px;
+}
+
+table#user_list td{
+	height:20px;
 }
 
 select#entry_id{
