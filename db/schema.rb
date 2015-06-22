@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150612082821) do
+ActiveRecord::Schema.define(version: 20150622041454) do
 
   create_table "cleaning_entries", force: true do |t|
     t.string   "name"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20150612082821) do
     t.integer  "join_flag"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user_id"
+    t.string   "pass"
   end
 
 end
