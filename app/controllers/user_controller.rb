@@ -1,10 +1,9 @@
 class UserController < ApplicationController
   def new
-    @user = CleaningEntry.new
   end
   
   def create
-    user = CleaningEntry.new
+    user = CleaningEntry.new(user_params)
     user.name = params[:user][:name]
     user.user_id = params[:user][:user_id]
     user.pass = params[:user][:pass]
@@ -18,7 +17,7 @@ class UserController < ApplicationController
   end
   
   def index
-    @user = CleaningEntry.all
+    @users = CleaningEntry.all
   end
   
   def switch
@@ -33,11 +32,11 @@ class UserController < ApplicationController
   
   def delete
     id = session[:user_id]
-    @user = CleaningEntry.find(id)
-    @user.destroy
+    user = CleaningEntry.find(id)
+    user.destroy
     
     session[:user] = nil
-    redirect_to user_index_path, notice: @user.name+'さんのユーザー情報削除が完了しました'
+    redirect_to user_index_path, notice: user.name+'さんのユーザー情報削除が完了しました'
   end
   
   def edit
@@ -45,13 +44,17 @@ class UserController < ApplicationController
   end
   
   def update
-    @user = CleaningEntry.find(params[:id])
-    @user.name = params[:user][:name]
-    @user.user_id = params[:user][:user_id]
-    @user.pass = params[:user][:pass]
+    user = CleaningEntry.find(params[:id])
+    user.name = params[:user][:name]
+    user.user_id = params[:user][:user_id]
+    user.pass = params[:user][:pass]
     
-    @user.save
-    flash.now[:notice] = @user.name+"さんのユーザー情報が更新されました"
-    render 'edit'
+    user.save
+    redirect_to user_index_path,  notice: user.name+'さんのユーザー情報が更新されました'
+  end
+  
+  private
+  def user_params
+    params.require(:user).permit(:name, :user_id, :pass)
   end
 end

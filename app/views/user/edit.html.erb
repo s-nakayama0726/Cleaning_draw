@@ -1,18 +1,17 @@
 <div align="center">
-<h1>お掃除抽選アプリ</h1><br>
-<h2>ユーザー情報編集画面</h2><br>
-<%= flash[:notice] %><br><br>
-<%= form_tag(user_path(@user), :method => :put) do %>
-<table>
-	<tr><td>名前：</td><td><%= text_field :user, :name %></td></tr>
-  	<tr><td>ユーザーID：</td><td><%= text_field :user, :user_id %></td></tr>
-  	<tr><td>パスワード：</td><td><%= text_field :user, :pass %></td></tr>
-</table>
-<br>
-  <%= submit_tag "変更" %>
-<% end %>
-<br><br>
-<%= button_tag type: 'button', onclick: "location.href='#{user_index_path}'" do %>
-	<%= "戻る"  %>
-<% end %>
+	<h1>お掃除抽選アプリ</h1><br>
+	<h2>ユーザー情報編集画面</h2><br>
+	<%= flash[:notice] %><br><br>
+	<%= form_tag(user_path(@user), :method => :put) do %>
+		<table>
+			<tr><td>名前：</td><td><%= text_field :user, :name %></td></tr>
+		  	<tr><td>ユーザーID：</td><td><%= text_field :user, :user_id %></td></tr>
+		  	<tr><td>パスワード：</td><td><%= text_field :user, :pass %></td></tr>
+		</table><br>
+		<%= submit_tag "変更" %>
+	<% end %>
+	<br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{user_index_path}'" do %>
+		<%= "戻る"  %>
+	<% end %>
 </div>

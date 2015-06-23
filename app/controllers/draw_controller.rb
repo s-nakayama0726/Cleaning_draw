@@ -2,7 +2,6 @@
 
 class DrawController < ApplicationController
   def user_index
-    @entry = CleaningEntry.all
   end
   
   def user_result
@@ -14,16 +13,16 @@ class DrawController < ApplicationController
   def user_show
     user_id = params[:user][:user_id]
     pass = params[:user][:pass]
-    @entry = CleaningEntry.find_by(user_id: "#{user_id}")
-    if @entry == nil   
-        flash.now[:notice] = "IDまたはパスワードが違います"
-        render 'user_index'
+    entry = CleaningEntry.find_by(user_id: "#{user_id}")
+    if entry == nil   
+      flash.now[:notice] = "IDまたはパスワードが違います"
+      render 'user_index'
     else 
-      if @entry.pass == pass
-        session[:id] = @entry.id
-        session[:name] = @entry.name
-        session[:draw_no] = @entry.draw_no
-        if @entry.join_flag >= 1
+      if entry.pass == pass
+        session[:id] = entry.id
+        session[:name] = entry.name
+        session[:draw_no] = entry.draw_no
+        if entry.join_flag >= 1
           render 'user_already_result'
         end
       else
@@ -33,55 +32,43 @@ class DrawController < ApplicationController
     end
   end
 
-  def user_params
-    params.require(:entry).permit(:name, :id)
-  end
-  
   def master_top
   end
   
   def master_draw
-      @entry = CleaningEntry.all
-      @rand_num = (1..100).to_a.sort_by{rand}[1..@entry.size]
+    entries = CleaningEntry.all
+    rand_num = (1..100).to_a.sample(entries.size)
+    i=0  
+    entries.each do |entry|
+      entry.draw_no = rand_num[i]
+      entry.join_flag = 0
+      entry.save
+      i = i + 1
+    end
       
-      @rand_num.size.times do |i|
-        @entry[i].draw_no = @rand_num[i]
-        @entry[i].join_flag = 0
-        @entry[i].save
-      end
+    session[:vacuum_cleaner_person] = nil
       
-      session[:vacuum_cleaner_person] = nil
-      
-      render 'master_top'
+    render 'master_top'
   end
 
   def master_draw_result
-    @entry = CleaningEntry.all
-    @entry_arr = @entry.map{ |entry| [entry.join_flag, entry.draw_no, entry.name] }
+    entries = CleaningEntry.all
+    @entries_arr = entries.map{ |entry| [entry.join_flag, entry.draw_no, entry.name] }
     
     i=0
-    @entry_arr.delete_if {|item| 
+    @entries_arr.delete_if {|item| 
       item[0] == 0
     }
     
     if session[:vacuum_cleaner_person] == nil
-    
-      @vacuum_cleaner_person,@wipe_person = @entry_arr.sample(2)
+      @vacuum_cleaner_person,@wipe_person = entries_arr.sample(2)
       session[:vacuum_cleaner_person] = @vacuum_cleaner_person
-      session[:wipe_person] = @wipe_person
-     
-    else 
-      
+      session[:wipe_person] = @wipe_person     
+    else
       @vacuum_cleaner_person = session[:vacuum_cleaner_person]
-      @wipe_person = session[:wipe_person]
-    
+      @wipe_person = session[:wipe_person] 
     end
     
     render 'master_draw_result'
-  end
-  
-  private
-  def user_params
-     params.require(:user).permit(:name)
   end
 end
