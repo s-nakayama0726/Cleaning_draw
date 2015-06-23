@@ -8,7 +8,7 @@ class DrawController < ApplicationController
     entry = CleaningEntry.find(session[:id])
     entry.join_flag = 1
     entry.save
-
+    @users_draw_info = CleaningEntry.select("id,name,draw_no,join_flag,pass")
   end
   
   def user_show
@@ -63,7 +63,7 @@ class DrawController < ApplicationController
     }
     
     if session[:vacuum_cleaner_person] == nil
-      @vacuum_cleaner_person,@wipe_person = entries_arr.sample(2)
+      @vacuum_cleaner_person,@wipe_person = @entries_arr.sample(2)
       session[:vacuum_cleaner_person] = @vacuum_cleaner_person
       session[:wipe_person] = @wipe_person     
     else
