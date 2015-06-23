@@ -8,26 +8,28 @@ class DrawController < ApplicationController
     entry = CleaningEntry.find(session[:id])
     entry.join_flag = 1
     entry.save
+
   end
   
   def user_show
+    @users_draw_info = CleaningEntry.select("name,draw_no,join_flag,pass")
     user_id = params[:user][:user_id]
     pass = params[:user][:pass]
     entry = CleaningEntry.find_by(user_id: "#{user_id}")
     if entry == nil   
       flash.now[:notice] = "IDまたはパスワードが違います"
-      render 'user_index'
+      render 'user_index' and return
     else 
       if entry.pass == pass
         session[:id] = entry.id
         session[:name] = entry.name
         session[:draw_no] = entry.draw_no
         if entry.join_flag >= 1
-          render 'user_already_result'
+          render 'user_already_result' and return
         end
       else
         flash.now[:notice] = "IDまたはパスワードが違います"
-        render 'user_index'
+        render 'user_index' and return
       end
     end
   end
