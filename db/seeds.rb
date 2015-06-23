@@ -8,31 +8,41 @@
 # coding: utf-8
 
 user = CleaningEntry.new
-user.name = "Aさん"
+user.name = "user1"
 user.draw_no = 1;
 user.join_flag = 1;
+user.user_id = "user1"
+user.pass= "user1"
 user.save
 
 user = CleaningEntry.new
-user.name = "Bさん"
+user.name = "user2"
 user.draw_no = 2;
 user.join_flag = 1;
+user.user_id = "user2"
+user.pass = "user2"
 user.save
 
 user = CleaningEntry.new
-user.name = "Cさん"
+user.name = "user3"
 user.draw_no = 3;
 user.join_flag = 0;
+user.user_id = "user3"
+user.pass = "user3"
 user.save
 
 user = CleaningEntry.new
-user.name = "Dさん"
+user.name = "user4"
 user.draw_no = 4;
 user.join_flag = 0;
+user.user_id = "user4"
+user.pass = "user4"
 user.save
 
 user = CleaningEntry.new
-user.name = "Eさん"
+user.name = "user5"
 user.draw_no = 5;
 user.join_flag = 0;
+user.user_id = "user5"
+user.pass = "user5"
 user.save
