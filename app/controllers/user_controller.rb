@@ -23,20 +23,18 @@ class UserController < ApplicationController
   def switch
     @user = CleaningEntry.find(params[:user][:id])
     if params[:commit] == '削除'
-      session[:user_id] = @user.id
-      redirect_to user_delete_path
+      redirect_to user_delete_path(@user)
     else
       redirect_to edit_user_path(@user)
     end  
   end
   
   def delete
-    id = session[:user_id]
-    user = CleaningEntry.find(id)
+    user = CleaningEntry.find(params[:format])
+    message = user.name+"さんの情報が削除されました"
     user.destroy
-    
-    session[:user] = nil
-    redirect_to user_index_path, notice: user.name+'さんのユーザー情報削除が完了しました'
+
+    redirect_to user_index_path, notice: message
   end
   
   def edit
