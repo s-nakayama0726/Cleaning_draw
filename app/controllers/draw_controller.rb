@@ -12,12 +12,24 @@ class DrawController < ApplicationController
   end
   
   def user_show
-    @entry = CleaningEntry.find(params[:entry][:id])
-    session[:id] = @entry.id
-    session[:name] = @entry.name
-    session[:draw_no] = @entry.draw_no
-    if @entry.join_flag >= 1
-      render 'user_already_result'
+    user_id = params[:user][:user_id]
+    pass = params[:user][:pass]
+    @entry = CleaningEntry.find_by(user_id: "#{user_id}")
+    if @entry == nil   
+        flash.now[:notice] = "IDまたはパスワードが違います"
+        render 'user_index'
+    else 
+      if @entry.pass == pass
+        session[:id] = @entry.id
+        session[:name] = @entry.name
+        session[:draw_no] = @entry.draw_no
+        if @entry.join_flag >= 1
+          render 'user_already_result'
+        end
+      else
+        flash.now[:notice] = "IDまたはパスワードが違います"
+        render 'user_index'
+      end
     end
   end
 
@@ -72,5 +84,4 @@ class DrawController < ApplicationController
   def user_params
      params.require(:user).permit(:name)
   end
-
 end

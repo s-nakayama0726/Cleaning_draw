@@ -1,4 +1,4 @@
-class AddIdToCleaningEntry < ActiveRecord::Migration
+class AddUseridToCleaningEntry < ActiveRecord::Migration
   def change
     add_column :cleaning_entries, :user_id, :string
     add_column :cleaning_entries, :pass, :string

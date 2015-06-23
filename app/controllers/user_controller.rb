@@ -4,11 +4,16 @@ class UserController < ApplicationController
   end
   
   def create
-    @user = CleaningEntry.new
-    @user.name = params[:user][:name]
-    
-    flash.now[:notice] = @user.name+"さんのユーザー情報登録が完了しました"
-    @user.save
+    user = CleaningEntry.new
+    user.name = params[:user][:name]
+    user.user_id = params[:user][:user_id]
+    user.pass = params[:user][:pass]
+    user.save
+    if user.errors.count == 0
+      flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
+    else
+      flash.now[:notice] = "既に登録されているユーザーIDです"
+    end 
     render 'new'
   end
   
@@ -42,8 +47,11 @@ class UserController < ApplicationController
   def update
     @user = CleaningEntry.find(params[:id])
     @user.name = params[:user][:name]
+    @user.user_id = params[:user][:user_id]
+    @user.pass = params[:user][:pass]
     
     @user.save
-    render 'edit',notice: @user.name+'さんのユーザー情報が更新されました'
+    flash.now[:notice] = @user.name+"さんのユーザー情報が更新されました"
+    render 'edit'
   end
 end

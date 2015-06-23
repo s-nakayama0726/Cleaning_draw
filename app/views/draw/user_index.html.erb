@@ -1,11 +1,13 @@
 <div align="center"><br>
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>トップ画面</h2>	<br>
+	<%= flash[:notice] %><br><br>
 	<%= form_tag('/draw/user_show') do %>
-	<font size="5">名前選択</font>
-
-	<%= select_tag 'entry[id]', options_for_select(@entry.map{ |entry| [entry.name, entry.id]}) %>
-	
+	<table>
+	<tr><td>ユーザーID：</td><td><%= text_field :user, :user_id %></td></tr>
+	<tr><td>パスワード：</td><td><%= password_field :user, :pass %></td></tr>
+	<tr></tr>
+	</table>
 	<%= submit_tag "ログイン" %><br><br><br><br>
 	<% end %>
 	<div id="lecture">
