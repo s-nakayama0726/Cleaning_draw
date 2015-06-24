@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'draw/master_top'
   get 'draw/master_draw_result'
   get 'draw/master_draw'
+  get 'draw/logout'
   post 'user/switch'
   get 'user/delete'
   resources 'user'

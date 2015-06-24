@@ -6,9 +6,9 @@
 		<p>エントリー漏れをご確認頂き、再度抽選を行って下さい。</p>
 	<% else %>
 		<p><font color="blue" size="5">掃除機当番</font>は</p><br>
-		抽選ナンバー<font color="blue" size="7"><%= @vacuum_cleaner_person[1] %></font>の<font color="blue" size="7"><%= @vacuum_cleaner_person[2] %></font>さんです</p><br>
+		抽選ナンバー<font color="blue" size="7"><%= @vacuum_cleaner_person.draw_no %></font>の<font color="blue" size="7"><%= @vacuum_cleaner_person.name %></font>さんです</p><br>
 		<p><font color="red" size="5">拭き掃除当番</font>は</p><br>
-		抽選ナンバー<font color="red" size="7"><%= @wipe_person[1] %></font>の<font color="red" size="7"><%= @wipe_person[2] %></font>さんです</p><br>
+		抽選ナンバー<font color="red" size="7"><%= @wipe_person.draw_no %></font>の<font color="red" size="7"><%= @wipe_person.name %></font>さんです</p><br>
 		<p>おめでとうございます</p>
 	<% end %>
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>

@@ -2,6 +2,11 @@
 
 class DrawController < ApplicationController
   def user_index
+    if session[:id] != nil
+      @users_draw_info = CleaningEntry.select("name,draw_no,join_flag,pass")
+      @entry = CleaningEntry.find(session[:id])
+      render 'user_already_result' and return
+    end
   end
   
   def user_result
@@ -15,16 +20,14 @@ class DrawController < ApplicationController
     @users_draw_info = CleaningEntry.select("name,draw_no,join_flag,pass")
     user_id = params[:user][:user_id]
     pass = params[:user][:pass]
-    entry = CleaningEntry.find_by(user_id: "#{user_id}")
-    if entry == nil   
+    @entry = CleaningEntry.find_by(user_id: "#{user_id}")
+    if @entry == nil   
       flash.now[:notice] = "IDまたはパスワードが違います"
       render 'user_index' and return
     else 
-      if entry.pass == pass
-        session[:id] = entry.id
-        session[:name] = entry.name
-        session[:draw_no] = entry.draw_no
-        if entry.join_flag >= 1
+      if @entry.pass == pass
+        session[:id] = @entry.id
+        if @entry.join_flag == 1
           render 'user_already_result' and return
         end
       else
@@ -39,6 +42,7 @@ class DrawController < ApplicationController
   
   def master_draw
     entries = CleaningEntry.all
+    
     rand_num = (1..100).to_a.sample(entries.size)
     i=0  
     entries.each do |entry|
@@ -47,30 +51,39 @@ class DrawController < ApplicationController
       entry.save
       i = i + 1
     end
-      
-    session[:vacuum_cleaner_person] = nil
-      
+    
+    draw_result_flag = DrawResult.find(1)
+    draw_result_flag.result_flag = 0
+    draw_result_flag.save
+            
     render 'master_top'
   end
 
   def master_draw_result
-    entries = CleaningEntry.all
-    @entries_arr = entries.map{ |entry| [entry.join_flag, entry.draw_no, entry.name] }
+    entries = CleaningEntry.where("join_flag = '1'")
+    draw_result = DrawResult.find(1)
+    #master_draw_result画面において、抽選に必要な最低限の人数が参加しているか判断をするためにインスタンス変数
+    @entries_arr = entries.map{|entry| [entry.id] }
     
-    i=0
-    @entries_arr.delete_if {|item| 
-      item[0] == 0
-    }
-    
-    if session[:vacuum_cleaner_person] == nil
-      @vacuum_cleaner_person,@wipe_person = @entries_arr.sample(2)
-      session[:vacuum_cleaner_person] = @vacuum_cleaner_person
-      session[:wipe_person] = @wipe_person     
+    if draw_result.result_flag == 0
+      vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
+      draw_result.vacuum_id = vacuum_result_arr[0]
+      draw_result.wipe_id = wipe_result_arr[0]
+      @vacuum_cleaner_person = CleaningEntry.find(vacuum_result_arr[0])
+      @wipe_person = CleaningEntry.find(wipe_result_arr[0])
+      draw_result.result_flag = 1
+      draw_result.save
     else
-      @vacuum_cleaner_person = session[:vacuum_cleaner_person]
-      @wipe_person = session[:wipe_person] 
+      @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
+      @wipe_person = CleaningEntry.find(draw_result.wipe_id)
     end
     
     render 'master_draw_result'
+  end
+  
+  def logout
+    session[:id] = nil
+    
+    redirect_to draw_user_index_path
   end
 end

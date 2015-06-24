@@ -4,14 +4,12 @@ class UserController < ApplicationController
   
   def create
     user = CleaningEntry.new(user_params)
-    user.name = params[:user][:name]
-    user.user_id = params[:user][:user_id]
-    user.pass = params[:user][:pass]
+    user.join_flag = 0
     user.save
     if user.errors.count == 0
       flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
     else
-      flash.now[:notice] = "既に登録されているユーザーIDです"
+      flash.now[:notice] = user.errors.full_messages[0]
     end 
     render 'new'
   end
@@ -48,7 +46,12 @@ class UserController < ApplicationController
     user.pass = params[:user][:pass]
     
     user.save
-    redirect_to user_index_path,  notice: user.name+'さんのユーザー情報が更新されました'
+    if user.errors.count == 0
+      flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
+    else
+      flash.now[:notice] = user.errors.full_messages[0]
+    end
+    redirect_to user_index_path
   end
   
   private
