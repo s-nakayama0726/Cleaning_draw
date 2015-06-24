@@ -47,11 +47,11 @@ class UserController < ApplicationController
     
     user.save
     if user.errors.count == 0
-      flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
+      message = user.name+"さんのユーザー情報が更新されました"
     else
-      flash.now[:notice] = user.errors.full_messages[0]
+      message = user.errors.full_messages[0]
     end
-    redirect_to user_index_path
+    redirect_to user_index_path, notice: message
   end
   
   private
