@@ -46,3 +46,8 @@ user.join_flag = 0;
 user.user_id = "user5"
 user.pass = "user5"
 user.save
+
+draw_result = DrawResult.new
+draw_result.id = 1
+draw_result.result_flag = 0
+draw_result.save
