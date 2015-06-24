@@ -2,8 +2,8 @@
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>お掃除抽選エントリー</h2><br>
 	<p>エントリー完了！！</p>
-	<p>今日の<%= session[:name] %>さんの抽選ナンバーは</p><br>
-	<font size="7"><%= session[:draw_no] %></font>です。<br>
+	<p>今日の<%= @entry.name %>さんの抽選ナンバーは</p><br>
+	<font size="7"><%= @entry.draw_no %></font>です。<br>
 	<p>結果発表は本日１５：３０です。発表まで少々お待ちください。</p><br><br>
 	<span style="text-decoration : underline">現在の抽選参加者</span><br><br>
 	<table align="center" border="1">
@@ -11,6 +11,7 @@
 		<% @users_draw_info.each do |user_info| %>
 			<% if user_info.join_flag == 1 %>
 				<tr><td align="center"><%= user_info.name %></td><td align="center"><%= user_info.draw_no %>
+				<td border="0">
 				<% if user_info.id == session[:id] %>
 					<strong>←you!</strong>
 				<% end %>

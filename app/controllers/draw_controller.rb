@@ -10,9 +10,10 @@ class DrawController < ApplicationController
   end
   
   def user_result
-    entry = CleaningEntry.find(session[:id])
-    entry.join_flag = 1
-    entry.save
+    @entry = CleaningEntry.find(session[:id])
+    @entry.join_flag = 1
+    @entry.save
+    @entry = CleaningEntry.find(session[:id])
     @users_draw_info = CleaningEntry.select("id,name,draw_no,join_flag,pass")
   end
   
