@@ -1,7 +1,7 @@
 <div align="center"><br>
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>お掃除抽選結果</h2><br>
-	<% unless @entries_arr.size > 2 %>
+	<% if @shortage_flag == 1 %>
 		<p>3人以上のエントリーを受け付けていない為、抽選を行うことができません</p>
 		<p>エントリー漏れをご確認頂き、再度抽選を行って下さい。</p>
 	<% else %>

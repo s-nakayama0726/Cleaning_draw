@@ -1,9 +1,10 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
-  def user_index
+  def user_index 
+    #session[:id]に値が入っていれば、既にエントリーを完了させたユーザーとしてuser_already_result画面に遷移
     if session[:id] != nil
-      @users_draw_info = CleaningEntry.select("name,draw_no,join_flag,pass")
+      @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
       @entry = CleaningEntry.find(session[:id])
       render 'user_already_result' and return
     end
@@ -14,11 +15,27 @@ class DrawController < ApplicationController
     @entry.join_flag = 1
     @entry.save
     @entry = CleaningEntry.find(session[:id])
-    @users_draw_info = CleaningEntry.select("id,name,draw_no,join_flag,pass")
+    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
+    
+    #全員の抽選が確認できたらその時点で抽選実行を行う(3人以上登録されているとき)
+    @ready_users = CleaningEntry.where("join_flag = '1'")
+    @all_users = CleaningEntry.all
+    if @all_users.size >= 3
+      if @ready_users.size == @all_users.size - 1
+        #master_draw_resultアクションと同じ処理
+        @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
+        draw_result = DrawResult.find(1)
+        vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
+        draw_result.vacuum_id = vacuum_result_arr[0]
+        draw_result.wipe_id = wipe_result_arr[0]
+        draw_result.result_flag = 1
+        draw_result.save
+      end
+    end
   end
   
   def user_show
-    @users_draw_info = CleaningEntry.select("name,draw_no,join_flag,pass")
+    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
     user_id = params[:user][:user_id]
     pass = params[:user][:pass]
     @entry = CleaningEntry.find_by(user_id: "#{user_id}")
@@ -39,6 +56,14 @@ class DrawController < ApplicationController
   end
 
   def master_top
+    #draw_entriesテーブルが空の場合、値を格納する
+    draw_results = DrawResult.all
+    if draw_results.empty?
+      draw_result = DrawResult.new
+      draw_result.id = 1
+      draw_result.result_flag = 0
+      draw_result.save
+    end
   end
   
   def master_draw
@@ -61,22 +86,25 @@ class DrawController < ApplicationController
   end
 
   def master_draw_result
-    entries = CleaningEntry.where("join_flag = '1'")
+    entries_arr = CleaningEntry.where("join_flag = '1'")
     draw_result = DrawResult.find(1)
-    #master_draw_result画面において、抽選に必要な最低限の人数が参加しているか判断をするためにインスタンス変数
-    @entries_arr = entries.map{|entry| [entry.id] }
     
-    if draw_result.result_flag == 0
-      vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
-      draw_result.vacuum_id = vacuum_result_arr[0]
-      draw_result.wipe_id = wipe_result_arr[0]
-      @vacuum_cleaner_person = CleaningEntry.find(vacuum_result_arr[0])
-      @wipe_person = CleaningEntry.find(wipe_result_arr[0])
-      draw_result.result_flag = 1
-      draw_result.save
+    if entries_arr.size <= 2
+      @shortage_flag = 1
     else
-      @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
-      @wipe_person = CleaningEntry.find(draw_result.wipe_id)
+      @shortage_flag = 0
+      if draw_result.result_flag == 0
+        vacuum_result, wipe_result = entries_arr.sample(2)
+        draw_result.vacuum_id = vacuum_result.id
+        draw_result.wipe_id = wipe_result.id
+        @vacuum_cleaner_person = CleaningEntry.find(vacuum_result.id)
+        @wipe_person = CleaningEntry.find(wipe_result.id)
+        draw_result.result_flag = 1
+        draw_result.save
+      else
+        @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
+        @wipe_person = CleaningEntry.find(draw_result.wipe_id)
+      end
     end
     
     render 'master_draw_result'

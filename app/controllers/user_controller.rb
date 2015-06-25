@@ -5,6 +5,16 @@ class UserController < ApplicationController
   def create
     user = CleaningEntry.new(user_params)
     user.join_flag = 0
+    
+    #既に割り当てられたナンバー以外の抽選ナンバーを割り当て
+    users = CleaningEntry.all
+    rand_num_arr = (1..100).to_a
+    rand_num_arr.reject! do |num|
+      search_result = CleaningEntry.where("draw_no = '#{num}'")
+      search_result.size >= 1
+    end
+    user.draw_no = rand_num_arr.sample
+        
     user.save
     if user.errors.count == 0
       flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
@@ -24,7 +34,7 @@ class UserController < ApplicationController
       redirect_to user_delete_path(@user)
     else
       redirect_to edit_user_path(@user)
-    end  
+    end
   end
   
   def delete
