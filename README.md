@@ -7,5 +7,5 @@
 
 ②コマンドプロンプト上でnumbers.txtをcleaning_draw.rbにリダイレクトし、実行する
 
-
+ブランチテスト２
 
