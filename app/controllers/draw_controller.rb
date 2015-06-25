@@ -1,7 +1,15 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
-  def user_index 
+  def user_index
+    #既に抽選が完了していれば、トップページに抽選結果を表示させるためのフラグ用意（操作説明画面を抽選結果画面に変更）
+    draw_result = DrawResult.find_by(id: 1)
+    draw_flag = draw_result.result_flag
+    if draw_flag == 1
+      @from_index_flag = 1
+      redirect_to draw_master_draw_result_path and return
+    end
+     
     #session[:id]に値が入っていれば、既にエントリーを完了させたユーザーとしてuser_already_result画面に遷移
     if session[:id] != nil
       @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
@@ -21,7 +29,7 @@ class DrawController < ApplicationController
     @ready_users = CleaningEntry.where("join_flag = '1'")
     @all_users = CleaningEntry.all
     if @all_users.size >= 3
-      if @ready_users.size == @all_users.size - 1
+      if @ready_users.size == @all_users.size
         #master_draw_resultアクションと同じ処理
         @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
         draw_result = DrawResult.find(1)

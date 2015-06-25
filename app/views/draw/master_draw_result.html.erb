@@ -11,8 +11,10 @@
 		抽選ナンバー<font color="red" size="7"><%= @wipe_person.draw_no %></font>の<font color="red" size="7"><%= @wipe_person.name %></font>さんです</p><br>
 		<p>おめでとうございます</p>
 	<% end %>
-	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>
-		<%= "管理者トップに戻る"  %>
+	<% if @from_index_flag == 0 %>
+		<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}'" do %>
+			<%= "管理者トップに戻る"  %>
+		<% end %>
 	<% end %>
 	<br>
 <br>
