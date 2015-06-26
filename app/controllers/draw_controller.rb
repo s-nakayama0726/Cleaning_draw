@@ -2,6 +2,15 @@
 
 class DrawController < ApplicationController
   def user_index
+    #draw_entriesテーブルが空の場合、値を格納する
+    draw_results = DrawResult.all
+    if draw_results.empty?
+      draw_result = DrawResult.new
+      draw_result.id = 1
+      draw_result.result_flag = 0
+      draw_result.save
+    end
+    
     #既に抽選が完了していれば、トップページに抽選結果を表示させるためのフラグ用意（操作説明画面を抽選結果画面に変更）
     draw_result = DrawResult.find_by(id: 1)
     draw_flag = draw_result.result_flag
