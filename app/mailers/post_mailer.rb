@@ -6,6 +6,7 @@ class PostMailer < ActionMailer::Base
     @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
     @wipe_person = CleaningEntry.find(draw_result.wipe_id)
     mail(from: 'お掃除抽選結果',
-         to: address)
+         to: address,
+         subject: '本日のお掃除抽選結果')
   end
 end
