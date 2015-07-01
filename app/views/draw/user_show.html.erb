@@ -4,6 +4,9 @@
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_result_path}'" do %>
 		<%= "本日の抽選ナンバーを引く"  %>
 	<% end %><br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_edit_path}'" do %>
+		<%= "ユーザー情報の編集"  %>
+	<% end %><br><br>
 	<span style="text-decoration : underline">現在の抽選参加者</span><br><br>
 	<table align="center" border="1">
 		<tr><td align="center"><strong>名前</strong></td><td align="center"><strong>抽選番号</strong></td></tr>
@@ -12,5 +15,5 @@
 				<tr><td align="center"><%= user_info.name %></td><td align="center"><%= user_info.draw_no %></td></tr>
 			<% end %>
 		<% end %>
-	</table>	
+	</table>
 </div>

@@ -21,6 +21,9 @@
 		<% end %>
 	</table>
 	<br><br>
+	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_edit_path}'" do %>
+		<%= "ユーザー情報の編集"  %>
+	<% end %><br><br>
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_logout_path}'" do %>
 		<%= "ログアウト"  %>
 	<% end %>

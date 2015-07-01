@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+	<div align="center"><br>
+	<h1>お掃除抽選アプリ</h1><br>
+	<h2>お掃除抽選結果</h2><br>
+	<p><font color="blue" size="5">掃除機当番</font>は</p><br>
+	抽選ナンバー<font color="blue" size="7"><%= @vacuum_cleaner_person.draw_no %></font>の<font color="blue" size="7"><%= @vacuum_cleaner_person.name %></font>さんです</p><br>
+	<p><font color="red" size="5">拭き掃除当番</font>は</p><br>
+	抽選ナンバー<font color="red" size="7"><%= @wipe_person.draw_no %></font>の<font color="red" size="7"><%= @wipe_person.name %></font>さんです</p><br>
+	<p>おめでとうございます</p>
+  </body>
+</html>

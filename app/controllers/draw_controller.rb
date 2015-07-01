@@ -1,7 +1,7 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
-  def user_index
+  def user_index    
     #draw_entriesテーブルが空の場合、値を格納する
     draw_results = DrawResult.all
     if draw_results.empty?
@@ -19,12 +19,17 @@ class DrawController < ApplicationController
       redirect_to draw_master_draw_result_path and return
     end
      
-    #session[:id]に値が入っていれば、既にエントリーを完了させたユーザーとしてuser_already_result画面に遷移
+    #ログイン判断（session[:id]に値が入っているかどうか）
+    #既にエントリーが済んでいるなら(join_flag==1なら）user_already_result画面に遷移、済んでいないならuser_show画面に遷移
     if session[:id] != nil
       @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
-      @entry = CleaningEntry.find(session[:id])
-      render 'user_already_result' and return
-    end
+      if CleaningEntry.find(session[:id]).join_flag == 1
+        @entry = CleaningEntry.find(session[:id])
+        render 'user_already_result' and return
+      else
+        render 'user_show'
+      end
+    end    
   end
   
   def user_result
@@ -47,6 +52,10 @@ class DrawController < ApplicationController
         draw_result.wipe_id = wipe_result_arr[0]
         draw_result.result_flag = 1
         draw_result.save
+        #mail
+        @ready_users.each do |user|
+          PostMailer.post_email(user.email).deliver
+        end
       end
     end
   end
@@ -71,7 +80,28 @@ class DrawController < ApplicationController
       end
     end
   end
-
+  
+  #ログインしているユーザー用の情報編集画面
+  def user_edit
+    @user = CleaningEntry.find(session[:id])
+  end
+  
+  def user_update
+    user = CleaningEntry.find(session[:id])
+    user.name = params[:user][:name]
+    user.user_id = params[:user][:user_id]
+    user.pass = params[:user][:pass]
+    user.email = params[:user][:email]
+    
+    user.save
+    if user.errors.count == 0
+      message = user.name+"さんのユーザー情報が更新されました"
+    else
+      message = user.errors.full_messages[0]
+    end
+    redirect_to draw_user_edit_path, notice: message
+  end
+  
   def master_top
     #draw_entriesテーブルが空の場合、値を格納する
     draw_results = DrawResult.all
@@ -118,6 +148,10 @@ class DrawController < ApplicationController
         @wipe_person = CleaningEntry.find(wipe_result.id)
         draw_result.result_flag = 1
         draw_result.save
+        #mail
+        entries_arr.each do |entry|
+          PostMailer.post_email(entry.email).deliver
+        end
       else
         @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
         @wipe_person = CleaningEntry.find(draw_result.wipe_id)

@@ -1,4 +1,5 @@
 class UserController < ApplicationController
+  
   def new
   end
   
@@ -14,7 +15,13 @@ class UserController < ApplicationController
       search_result.size >= 1
     end
     user.draw_no = rand_num_arr.sample
-        
+    
+    #登録ユーザー数が上限数の100を越えていた場合エラーを表示
+    if users.size >= 100
+      flash.now[:notice] = "登録数が100を超えています。これ以上新規登録はできません"
+      render 'new' and return   
+    end
+    
     user.save
     if user.errors.count == 0
       flash.now[:notice] = user.name+"さんのユーザー情報登録が完了しました"
@@ -54,6 +61,7 @@ class UserController < ApplicationController
     user.name = params[:user][:name]
     user.user_id = params[:user][:user_id]
     user.pass = params[:user][:pass]
+    user.email = params[:user][:email]
     
     user.save
     if user.errors.count == 0
@@ -66,6 +74,6 @@ class UserController < ApplicationController
   
   private
   def user_params
-    params.require(:user).permit(:name, :user_id, :pass)
+    params.require(:user).permit(:name, :user_id, :pass, :email)
   end
 end

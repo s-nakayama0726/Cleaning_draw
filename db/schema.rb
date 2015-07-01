@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150624005037) do
+ActiveRecord::Schema.define(version: 20150630025852) do
 
   create_table "cleaning_entries", force: true do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150624005037) do
     t.datetime "updated_at"
     t.string   "user_id"
     t.string   "pass"
+    t.string   "email"
   end
 
   create_table "draw_results", force: true do |t|

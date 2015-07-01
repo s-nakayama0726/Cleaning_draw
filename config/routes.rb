@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'draw/master_draw_result'
   get 'draw/master_draw'
   get 'draw/logout'
+  get 'draw/user_edit'
+  put 'draw/user_update'
   post 'user/switch'
   get 'user/delete'
   resources 'user'
