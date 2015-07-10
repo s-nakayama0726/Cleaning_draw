@@ -1,11 +1,11 @@
 class CleaningEntry < ActiveRecord::Base
-   validates_uniqueness_of :user_id, :message => "既に登録されているユーザーIDです"
-   validates :name, :presence => true
-   validates :user_id, :presence => true
-   validates :pass, :presence => true
-   validates :email, :presence => true
-   validates_format_of :user_id, with: /\A[a-z0-9]+\z/i, :message => "エラー　IDは半角英数字で登録してください"
-   validates_format_of :pass, with: /\A[a-z0-9]+\z/i, :message => "エラー　パスワードは半角英数字で登録してください"
+#   validates_uniqueness_of :user_id, :message => "既に登録されているユーザーIDです"
+#   validates :name, :presence => true
+#   validates :user_id, :presence => true
+#   validates :pass, :presence => true
+#   validates :email, :presence => true
+#   validates_format_of :user_id, with: /\A[a-z0-9]+\z/i, :message => "エラー　IDは半角英数字で登録してください"
+#   validates_format_of :pass, with: /\A[a-z0-9]+\z/i, :message => "エラー　パスワードは半角英数字で登録してください"
    
    before_save :encrypt_pass
    after_find :decrypt_pass

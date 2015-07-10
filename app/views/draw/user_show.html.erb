@@ -1,12 +1,27 @@
+
+	<head>
+		<meta charset="utf-8">
+		<title>Roulette.js Demo</title>
+		<link rel="stylesheet" href="/sample/bootstrap.css"></link>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/ui-lightness/jquery-ui.css">
+		<link rel="stylesheet" href="/sample/bootstrap-responsive.css"></link>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/ui-lightness/jquery-ui.css">
+		<link rel="stylesheet" href="/sample/demo.css"></link>
+	</head>
+
 <div align="center"><br>
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>お掃除抽選エントリー</h2><br>
+
+<!--
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_result_path}'" do %>
-		<%= "本日の抽選ナンバーを引く"  %>
+		本日の抽選ナンバーを引く
 	<% end %><br><br>
+-->	
 	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_edit_path}'" do %>
 		<%= "ユーザー情報の編集"  %>
 	<% end %><br><br>
+<!--
 	<span style="text-decoration : underline">現在の抽選参加者</span><br><br>
 	<table align="center" border="1">
 		<tr><td align="center"><strong>名前</strong></td><td align="center"><strong>抽選番号</strong></td></tr>
@@ -16,4 +31,57 @@
 			<% end %>
 		<% end %>
 	</table>
+-->	
 </div>
+
+
+		<div class="container">
+			<div class="row">
+				<div class="span4">
+					<div class="roulette_container" >
+						<div class="roulette" style="display:none;">
+							<img src="/sample/star.png"/>
+							<img src="/sample/flower.png"/>
+							<img src="/sample/coin.png"/>
+							<img src="/sample/mshroom.png"/>
+							<img src="/sample/chomp.png"/>
+						</div>
+					</div>
+					<div class="btn_container">
+						<p>
+						<button class="btn btn-large btn-primary start"> 
+<%if @entry.join_flag==1%>
+もう1回
+<%else%>
+スタート 
+<%end%>
+						</button>
+						<button class="stop btn-large btn btn-warning"> ストップ </button>
+						</p>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="right_container">
+						<span class="image_sample">
+							<img data-value="0"  src="/sample/star.png"/>ハズレ<br />
+							<img data-value="1"  src="/sample/flower.png"/>ハズレ<br />
+							<img data-value="2"  src="/sample/coin.png"/>ハズレ<br />
+							<img data-value="3"  src="/sample/mshroom.png"/>ハズレ<br />
+							<img data-value="4"  src="/sample/chomp.png"/>当たり<br />
+						</span>
+						<input type="hidden" value="<%= @speed %>" class="userSpeed">
+						<input type="hidden" value="<%= @duration %>" class="userDuration">
+						<input type="hidden" value="4" class="userNumber">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+		<script src="/sample/roulette.js"></script>
+		<script src="/sample/demo.js"></script>
+
+
+
+

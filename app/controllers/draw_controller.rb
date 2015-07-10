@@ -1,7 +1,14 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
-  def user_index    
+
+  before_action :set_spin_speed, only: [:user_index, :user_show, :user_result]
+  def set_spin_speed
+    @speed = Random.new(Time.now.sec).rand(15)
+    @duration = Random.new(Time.now.sec).rand(10)
+  end
+
+  def user_index
     #draw_entriesテーブルが空の場合、値を格納する
     draw_results = DrawResult.all
     if draw_results.empty?
@@ -25,7 +32,7 @@ class DrawController < ApplicationController
       @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
       if CleaningEntry.find(session[:id]).join_flag == 1
         @entry = CleaningEntry.find(session[:id])
-        render 'user_already_result' and return
+#        render 'user_already_result' and return
       else
         render 'user_show'
       end
@@ -33,31 +40,20 @@ class DrawController < ApplicationController
   end
   
   def user_result
+    p "------------"
     @entry = CleaningEntry.find(session[:id])
-    @entry.join_flag = 1
+    p "----------"
+    p @entry
+    @entry.join_flag = 1.to_i
     @entry.save
-    @entry = CleaningEntry.find(session[:id])
-    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
+    p "======="
+    p @entry
     
-    #全員の抽選が確認できたらその時点で抽選実行を行う(3人以上登録されているとき)
-    @ready_users = CleaningEntry.where("join_flag = '1'")
-    @all_users = CleaningEntry.all
-    if @all_users.size >= 3
-      if @ready_users.size == @all_users.size
-        #master_draw_resultアクションと同じ処理
-        @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
-        draw_result = DrawResult.find(1)
-        vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
-        draw_result.vacuum_id = vacuum_result_arr[0]
-        draw_result.wipe_id = wipe_result_arr[0]
-        draw_result.result_flag = 1
-        draw_result.save
-        #mail
-        @ready_users.each do |user|
-          PostMailer.post_email(user.email).deliver
-        end
-      end
-    end
+    @entry = CleaningEntry.find(session[:id])
+    p "9999999999"
+    p @entry
+    
+    render :json => @entry
   end
   
   def user_show
@@ -71,9 +67,9 @@ class DrawController < ApplicationController
     else 
       if @entry.pass == pass
         session[:id] = @entry.id
-        if @entry.join_flag == 1
-          render 'user_already_result' and return
-        end
+#        if @entry.join_flag == 1
+#          render 'user_already_result' and return
+#        end
       else
         flash.now[:notice] = "IDまたはパスワードが違います"
         render 'user_index' and return
