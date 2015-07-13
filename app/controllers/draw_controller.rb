@@ -16,7 +16,9 @@ class DrawController < ApplicationController
     draw_flag = draw_result.result_flag
     if draw_flag == 1
       @from_index_flag = 1
-      redirect_to draw_master_draw_result_path and return
+      @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
+      @wipe_person = CleaningEntry.find(draw_result.wipe_id)
+      render "master_draw_result" and return
     end
      
     #ログイン判断（session[:id]に値が入っているかどうか）
@@ -42,19 +44,21 @@ class DrawController < ApplicationController
     #全員の抽選が確認できたらその時点で抽選実行を行う(3人以上登録されているとき)
     @ready_users = CleaningEntry.where("join_flag = '1'")
     @all_users = CleaningEntry.all
-    if @all_users.size >= 3
-      if @ready_users.size == @all_users.size
-        #master_draw_resultアクションと同じ処理
-        @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
-        draw_result = DrawResult.find(1)
-        vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
-        draw_result.vacuum_id = vacuum_result_arr[0]
-        draw_result.wipe_id = wipe_result_arr[0]
-        draw_result.result_flag = 1
-        draw_result.save
-        #mail
-        @ready_users.each do |user|
-          PostMailer.post_email(user.email).deliver
+    draw_result = DrawResult.find(1)
+    if draw_result.result_flag == 0
+      if @all_users.size >= 3
+        if @ready_users.size == @all_users.size
+          #master_draw_resultアクションと同じ処理
+          @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
+          vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
+          draw_result.vacuum_id = vacuum_result_arr[0]
+          draw_result.wipe_id = wipe_result_arr[0]
+          draw_result.result_flag = 1
+          draw_result.save
+          #mail
+          @ready_users.each do |user|
+            PostMailer.post_email(user.email).deliver
+          end
         end
       end
     end
