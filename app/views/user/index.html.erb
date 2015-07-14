@@ -1,23 +1,17 @@
 <div align="center">
 	<h1>お掃除抽選アプリ</h1><br>
 	<h2>ユーザー管理トップ画面</h2><br>
+	<font size="5">ユーザー選択</font><br>
 	<%= flash[:notice] %><br>
-	<%= form_tag(user_switch_path) do %>
 		<table>
-			<tr><td><font size="5">　ユーザー選択</font></td></tr><br>	
-			<tr><td>
-			<%= select_tag 'user[id]', options_for_select(@users.map{ |user| [user.name, user.id]}) %>		
-			<%= submit_tag "編集" %>
-			<%= submit_tag "削除" %></td>
-			<td>　　　</td>
-			<td><%= button_tag type: 'button', onclick: "location.href='#{new_user_path}';" do %>
-			<%= "新規ユーザー追加"  %>
-			<% end %></td></tr>
-		</table>
-	<% end %>
+			<% @users.each do |user| %> 
+				<tr><td><%= user.name %>　　</td>
+					<td><%= button_to '編集', edit_user_path(user.id), method: :get %></td>
+					<td><%= button_to '削除', user_path(user.id), method: :delete %></td></tr>
+			<% end %>
+		</table><br>
+			<%= button_to '新規ユーザー追加', new_user_path, method: :get %>
 	<br><br><br>
-	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_top_path}';" do %>
-		<%= "戻る"  %>
-	<% end %>
+	<%= button_to '戻る', draw_master_top_path, method: :get %>
 </div>
 

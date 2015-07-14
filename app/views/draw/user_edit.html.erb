@@ -14,7 +14,5 @@
 	<p>※全項目入力必須</p>
 	<p>※ユーザーID、パスワードは半角英数字で入力して下さい</p>
 	<br><br>
-	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_index_path}'" do %>
-		<%= "戻る"  %>
-	<% end %>
+	<%= button_to '戻る', draw_user_index_path, method: :get %>
 </div>

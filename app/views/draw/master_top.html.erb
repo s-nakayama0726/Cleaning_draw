@@ -13,20 +13,15 @@
 	<br>
 	※ボタン押下で”割り当てが完了しました”というポップアップ表示。<br>
 	データベースに登録されている人のdraw_noの値がランダムに割り当てられる<br><br>
-	<%= button_tag type: 'button', onclick: "location.href='#{draw_master_draw_result_path}'" do %>
-		<%= "抽選実行"  %>
-	<% end %>
+	<%= button_to '抽選実行', draw_master_draw_result_path, method: :get %>
 	<br>
 	※ボタン押下で結果がポップアップ表示<br>
 	さらに該当者にメールが送信される<br><br>
-	<%= button_tag type: 'button', onclick: "location.href='#{user_index_path}'" do %>
-		<%= "ユーザー管理"  %>
-	<% end %><br>
+	<%= button_to 'ユーザー管理', user_index_path, method: :get %>
+	<br>
 	※ユーザー管理画面に遷移する
 	<br><br><br><br>
-	<%= button_tag type: 'button', onclick: "location.href='#{draw_user_index_path}'" do %>
-		<%= "戻る"  %>
-	<% end %><br>
+	<%= button_to '戻る', draw_user_index_path, method: :get %><br>
 	※お掃除抽選アプリトップ画面に遷移する
 </div>
 

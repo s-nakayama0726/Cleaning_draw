@@ -35,17 +35,8 @@ class UserController < ApplicationController
     @users = CleaningEntry.all
   end
   
-  def switch
-    @user = CleaningEntry.find(params[:user][:id])
-    if params[:commit] == '削除'
-      redirect_to user_delete_path(@user)
-    else
-      redirect_to edit_user_path(@user)
-    end
-  end
-  
-  def delete
-    user = CleaningEntry.find(params[:format])
+  def destroy
+    user = CleaningEntry.find(params[:id])
     message = user.name+"さんの情報が削除されました"
     user.destroy
 
@@ -58,12 +49,8 @@ class UserController < ApplicationController
   
   def update
     user = CleaningEntry.find(params[:id])
-    user.name = params[:user][:name]
-    user.user_id = params[:user][:user_id]
-    user.pass = params[:user][:pass]
-    user.email = params[:user][:email]
+    user.update(user_params)
     
-    user.save
     if user.errors.count == 0
       message = user.name+"さんのユーザー情報が更新されました"
     else

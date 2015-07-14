@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   get 'draw/logout'
   get 'draw/user_edit'
   put 'draw/user_update'
-  post 'user/switch'
   get 'user/delete'
   resources 'user'
   # The priority is based upon order of creation: first created -> highest priority.

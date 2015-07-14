@@ -92,12 +92,8 @@ class DrawController < ApplicationController
   
   def user_update
     user = CleaningEntry.find(session[:id])
-    user.name = params[:user][:name]
-    user.user_id = params[:user][:user_id]
-    user.pass = params[:user][:pass]
-    user.email = params[:user][:email]
+    user.update(user_params)
     
-    user.save
     if user.errors.count == 0
       message = user.name+"さんのユーザー情報が更新されました"
     else
@@ -169,5 +165,10 @@ class DrawController < ApplicationController
     session[:id] = nil
     
     redirect_to draw_user_index_path
+  end
+  
+  private
+  def user_params
+    params.require(:user).permit(:name, :user_id, :pass, :email)
   end
 end
