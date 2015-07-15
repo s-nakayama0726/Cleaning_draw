@@ -1,30 +1,21 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
+  before_action :set_users_draw_info_get, only: [:user_index, :user_result, :user_show]
+  
   def user_index    
-    #draw_entriesテーブルが空の場合、値を格納する
-    draw_results = DrawResult.all
-    if draw_results.empty?
-      draw_result = DrawResult.new
-      draw_result.id = 1
-      draw_result.result_flag = 0
-      draw_result.save
-    end
-    
     #既に抽選が完了していれば、トップページに抽選結果を表示させるためのフラグ用意（操作説明画面を抽選結果画面に変更）
-    draw_result = DrawResult.find_by(id: 1)
-    draw_flag = draw_result.result_flag
-    if draw_flag == 1
-      @from_index_flag = 1
-      @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
-      @wipe_person = CleaningEntry.find(draw_result.wipe_id)
-      render "master_draw_result" and return
+    if draw_result = DrawResult.find_by_id(1)
+      if draw_result.draw_done_check
+        @from_index_flag = 1
+        @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(draw_result.vacuum_id, draw_result.wipe_id)
+        render "master_draw_result" and return
+      end
     end
      
     #ログイン判断（session[:id]に値が入っているかどうか）
     #既にエントリーが済んでいるなら(join_flag==1なら）user_already_result画面に遷移、済んでいないならuser_show画面に遷移
     if session[:id] != nil
-      @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
       if CleaningEntry.find(session[:id]).join_flag == 1
         @entry = CleaningEntry.find(session[:id])
         render 'user_already_result' and return
@@ -39,33 +30,18 @@ class DrawController < ApplicationController
     @entry.join_flag = 1
     @entry.save
     @entry = CleaningEntry.find(session[:id])
-    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
     
     #全員の抽選が確認できたらその時点で抽選実行を行う(3人以上登録されているとき)
-    @ready_users = CleaningEntry.where("join_flag = '1'")
-    @all_users = CleaningEntry.all
     draw_result = DrawResult.find(1)
     if draw_result.result_flag == 0
-      if @all_users.size >= 3
-        if @ready_users.size == @all_users.size
-          #master_draw_resultアクションと同じ処理
-          @entries_arr = @ready_users.map{|ready_user| [ready_user.id] }
-          vacuum_result_arr, wipe_result_arr = @entries_arr.sample(2)
-          draw_result.vacuum_id = vacuum_result_arr[0]
-          draw_result.wipe_id = wipe_result_arr[0]
-          draw_result.result_flag = 1
-          draw_result.save
-          #mail
-          @ready_users.each do |user|
-            PostMailer.post_email(user.email).deliver
-          end
-        end
+      if CleaningEntry.all_member_draw_done_check
+        vacuum_id, wipe_id = CleaningEntry.draw_action 
+        DrawResult.result_record(vacuum_id, wipe_id)
       end
-    end
+    end   
   end
   
   def user_show
-    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
     user_id = params[:user][:user_id]
     pass = params[:user][:pass]
     @entry = CleaningEntry.find_by(user_id: "#{user_id}")
@@ -103,31 +79,13 @@ class DrawController < ApplicationController
   end
   
   def master_top
-    #draw_entriesテーブルが空の場合、値を格納する
-    draw_results = DrawResult.all
-    if draw_results.empty?
-      draw_result = DrawResult.new
-      draw_result.id = 1
-      draw_result.result_flag = 0
-      draw_result.save
-    end
   end
   
   def master_draw
-    entries = CleaningEntry.all
-    
-    rand_num = (1..100).to_a.sample(entries.size)
-    i=0  
-    entries.each do |entry|
-      entry.draw_no = rand_num[i]
-      entry.join_flag = 0
-      entry.save
-      i = i + 1
-    end
-    
-    draw_result_flag = DrawResult.find(1)
-    draw_result_flag.result_flag = 0
-    draw_result_flag.save
+    #登録されているユーザーに抽選番号を割り当てる
+    CleaningEntry.draw_number_deal
+    #抽選実行済み判断用フラグを下ろす
+    DrawResult.result_flag_off
             
     render 'master_top'
   end
@@ -140,21 +98,15 @@ class DrawController < ApplicationController
       @shortage_flag = 1
     else
       @shortage_flag = 0
+      draw_result = DrawResult.find(1)
       if draw_result.result_flag == 0
-        vacuum_result, wipe_result = entries_arr.sample(2)
-        draw_result.vacuum_id = vacuum_result.id
-        draw_result.wipe_id = wipe_result.id
-        @vacuum_cleaner_person = CleaningEntry.find(vacuum_result.id)
-        @wipe_person = CleaningEntry.find(wipe_result.id)
-        draw_result.result_flag = 1
-        draw_result.save
-        #mail
-        entries_arr.each do |entry|
-          PostMailer.post_email(entry.email).deliver
-        end
+        vacuum_id, wipe_id = CleaningEntry.all_member_draw_done_check
+        DrawResult.result_record(vacuum_id, wipe_id)
+        vacuum_id, wipe_id = DrawResult.duty_check
+        @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(vacuum_id, wipe_id)
       else
-        @vacuum_cleaner_person = CleaningEntry.find(draw_result.vacuum_id)
-        @wipe_person = CleaningEntry.find(draw_result.wipe_id)
+        vacuum_id, wipe_id = DrawResult.duty_check
+        @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(vacuum_id, wipe_id)
       end
     end
     
@@ -170,5 +122,10 @@ class DrawController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :user_id, :pass, :email)
+  end
+  
+  private
+  def set_users_draw_info_get
+    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass")
   end
 end
