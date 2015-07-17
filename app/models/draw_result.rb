@@ -5,10 +5,12 @@ class DrawResult < ActiveRecord::Base
     self.result_flag == 1  
   end
   
+  #抽選結果をdraw_resultsテーブルに記録
   def self.result_record(vacuum_result_id, wipe_result_id)
     draw_result = DrawResult.find(1)
     draw_result.vacuum_id = vacuum_result_id
     draw_result.wipe_id = wipe_result_id
+    draw_result.save
     DrawResult.result_flag_on
   end
   

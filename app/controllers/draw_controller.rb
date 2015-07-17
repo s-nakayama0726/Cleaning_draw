@@ -37,6 +37,8 @@ class DrawController < ApplicationController
       if CleaningEntry.all_member_draw_done_check
         vacuum_id, wipe_id = CleaningEntry.draw_action 
         DrawResult.result_record(vacuum_id, wipe_id)
+        CleaningEntry.result_check(vacuum_id, wipe_id)
+        mail_action
       end
     end   
   end
@@ -100,9 +102,10 @@ class DrawController < ApplicationController
       @shortage_flag = 0
       draw_result = DrawResult.find(1)
       if draw_result.result_flag == 0
-        vacuum_id, wipe_id = CleaningEntry.all_member_draw_done_check
+        vacuum_id, wipe_id = CleaningEntry.draw_action
         DrawResult.result_record(vacuum_id, wipe_id)
         vacuum_id, wipe_id = DrawResult.duty_check
+        mail_action
         @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(vacuum_id, wipe_id)
       else
         vacuum_id, wipe_id = DrawResult.duty_check
@@ -117,6 +120,14 @@ class DrawController < ApplicationController
     session[:id] = nil
     
     redirect_to draw_user_index_path
+  end
+  
+  #mailを送信する
+  def mail_action
+    ready_users = CleaningEntry.where("join_flag = '1'")
+    ready_users.each do |user|
+      PostMailer.post_email(user.email).deliver
+    end
   end
   
   private
