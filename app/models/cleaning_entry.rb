@@ -15,7 +15,10 @@ class CleaningEntry < ActiveRecord::Base
   JOINED = 1
   scope :joined, ->{ where :join_flag => JOINED }
   
-   
+  def joined?
+      self.join_flag == 1
+  end
+  
   def user_over_check
     users = CleaningEntry.all
     if users.size >= 100
@@ -41,9 +44,7 @@ class CleaningEntry < ActiveRecord::Base
    
   #テーブルに登録されている全てのユーザーのエントリーが確認できた場合、抽選を行う
   def self.all_member_draw_done_check
-    ready_users = CleaningEntry.select(:id, :pass).joined
-    all_users = CleaningEntry.all
-    all_users.size >= 3 if ready_users.size == all_users.size
+    all_users.size >= 3 if CleaningEntry.select(:id, :pass, :join_flag).all?(&:joined?)
   end
    
   def self.draw_action
