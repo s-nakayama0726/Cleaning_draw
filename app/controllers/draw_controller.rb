@@ -20,6 +20,7 @@ class DrawController < ApplicationController
   def user_result
     @entry = CleaningEntry.find(session[:id])
     @entry.join_flag = 1
+    @entry.hit_rate_get
     @entry.join_count_add
     @entry.save
     @entry = CleaningEntry.find(session[:id])
@@ -108,7 +109,7 @@ class DrawController < ApplicationController
         DrawResult.result_record(vacuum_id, wipe_id)
         vacuum_id, wipe_id = DrawResult.duty_check
         CleaningEntry.hit_count_add(vacuum_id, wipe_id)
-        mail_action
+        # mail_action
         @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(vacuum_id, wipe_id)
       else
         vacuum_id, wipe_id = DrawResult.duty_check
@@ -140,6 +141,6 @@ class DrawController < ApplicationController
   
   private
   def set_users_draw_info_get
-    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass, join_count, hit_count")
+    @users_draw_info = CleaningEntry.select("id, name, draw_no, join_flag, pass, join_count, hit_count, rate")
   end
 end

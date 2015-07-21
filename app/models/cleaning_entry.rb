@@ -76,7 +76,7 @@ class CleaningEntry < ActiveRecord::Base
   end
   
   def hit_rate_get
-    self.hit_count.to_f / self.join_count.to_f * 100.0
+    self.rate = self.hit_count.to_f / self.join_count.to_f * 100
   end
   
   def join_count_add
@@ -84,8 +84,8 @@ class CleaningEntry < ActiveRecord::Base
   end
   
   def self.hit_count_add(vacuum_id, wipe_id)
-    vacuum_person = CleaningEntry.find_by(id: vacuum_id)
-    wipe_person = CleaningEntry.find_by(id: wipe_id)
+    vacuum_person = CleaningEntry.find_by_id(vacuum_id)
+    wipe_person = CleaningEntry.find_by_id(wipe_id)
     vacuum_person.hit_count = vacuum_person.hit_count + 1
     vacuum_person.save
     wipe_person.hit_count = wipe_person.hit_count + 1

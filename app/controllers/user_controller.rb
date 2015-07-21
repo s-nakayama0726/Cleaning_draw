@@ -8,6 +8,7 @@ class UserController < ApplicationController
     user.join_flag = 0
     user.join_count = 0
     user.hit_count = 0
+    user.rate = 0
     user.save
     
     if user.errors.count == 0
