@@ -16,7 +16,14 @@ class CleaningEntry < ActiveRecord::Base
   scope :joined, ->{ where :join_flag => JOINED }
   
   def joined?
-      self.join_flag == 1
+    self.join_flag == 1
+  end
+  
+  #参加人数の総数と、現在エントリーが完了している人数を取得する
+  def self.user_count
+    all_users_number = CleaningEntry.all.size
+    already_entry_users_number = CleaningEntry.where("join_flag = '1'").size
+    return all_users_number, already_entry_users_number
   end
   
   def user_over_check
@@ -42,13 +49,14 @@ class CleaningEntry < ActiveRecord::Base
     return CleaningEntry.find_by_id(vacuum_id), CleaningEntry.find_by_id(wipe_id)
   end
    
-  #テーブルに登録されている全てのユーザーのエントリーが確認できた場合、抽選を行う
+  
+  #テーブルに登録されている全てのユーザーのエントリーが完了したかどうかを確認する
   def self.all_member_draw_done_check
-    all_users.size >= 3 if CleaningEntry.select(:id, :pass, :join_flag).all?(&:joined?)
+    CleaningEntry.select(:id, :pass, :join_flag).all?(&:joined?)
   end
    
   def self.draw_action
-    ready_users = CleaningEntry.select(:id, :pass).joined
+    ready_users = CleaningEntry.select(:id, :pass, :join_count, :hit_count).joined
     draw_result_arr = ready_users.sample(2)
     return draw_result_arr[0].id, draw_result_arr[1].id
   end
@@ -66,7 +74,24 @@ class CleaningEntry < ActiveRecord::Base
       i = i + 1
     end
   end
-   
+  
+  def hit_rate_get
+    self.hit_count.to_f / self.join_count.to_f * 100.0
+  end
+  
+  def join_count_add
+    self.join_count = self.join_count + 1
+  end
+  
+  def self.hit_count_add(vacuum_id, wipe_id)
+    vacuum_person = CleaningEntry.find_by(id: vacuum_id)
+    wipe_person = CleaningEntry.find_by(id: wipe_id)
+    vacuum_person.hit_count = vacuum_person.hit_count + 1
+    vacuum_person.save
+    wipe_person.hit_count = wipe_person.hit_count + 1
+    wipe_person.save
+  end
+  
   def encrypt_pass
     self.pass = encrypt(self.pass)
   end
