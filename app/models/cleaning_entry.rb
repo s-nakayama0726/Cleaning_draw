@@ -8,7 +8,7 @@ class CleaningEntry < ActiveRecord::Base
   validates_format_of :pass, with: /\A[a-z0-9]+\z/i, :message => "エラー　パスワードは半角英数字で登録してください"
   validate :user_over_check
    
-  before_save :draw_no_deal, :encrypt_pass
+  before_save :draw_number_deal_for_create, :encrypt_pass
   after_find :decrypt_pass
   
   #参加しているかどうかの判断用定数
@@ -22,7 +22,7 @@ class CleaningEntry < ActiveRecord::Base
   #参加人数の総数と、現在エントリーが完了している人数を取得する
   def self.user_count
     all_users_number = CleaningEntry.all.size
-    already_entry_users_number = CleaningEntry.where("join_flag = '1'").size
+    already_entry_users_number = CleaningEntry.where(join_flag: 1).size
     return all_users_number, already_entry_users_number
   end
   
@@ -31,17 +31,6 @@ class CleaningEntry < ActiveRecord::Base
     if users.size >= 100
       errors.add(:id, "エラー　100人以上登録できません")
     end
-  end
-   
-  def draw_no_deal
-    #既に割り当てられたナンバー以外の抽選ナンバーを割り当て
-    users = CleaningEntry.all
-    rand_num_arr = (1..100).to_a
-    rand_num_arr.reject! do |num|
-      search_result = CleaningEntry.where("draw_no = '#{num}'")
-      search_result.size >= 1
-    end
-    self.draw_no = rand_num_arr.sample
   end
    
   #指定したidのユーザー情報を取得する
@@ -68,11 +57,18 @@ class CleaningEntry < ActiveRecord::Base
     rand_num = (1..100).to_a.sample(entries.size)
     i=0  
     entries.each do |entry|
-      entry.draw_no = rand_num[i]
-      entry.join_flag = 0
-      entry.save
+      entry.update(draw_no: rand_num[i], join_flag: 0)
       i = i + 1
     end
+  end
+  
+  def draw_number_deal_for_create
+    #既に割り当てられたナンバー以外の抽選ナンバーを割り当て
+    users = CleaningEntry.where("draw_no not ?", nil)
+    users_draw_no = users.map{|user| user.draw_no}
+    rand_num_arr = (1..100).to_a
+    rand_num_arr = rand_num_arr - users_draw_no
+    self.draw_no = rand_num_arr.sample
   end
   
   def hit_rate_get

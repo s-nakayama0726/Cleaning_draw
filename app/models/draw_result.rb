@@ -16,20 +16,20 @@ class DrawResult < ActiveRecord::Base
   
   #現在の当番idをチェック
   def self.duty_check
-    draw_result = DrawResult.find(1)
+    draw_result = DrawResult.where(id: 1)[0]
     return draw_result.vacuum_id, draw_result.wipe_id
   end
   
   #抽選実行済み判断用フラグを下ろす
   def self.result_flag_off
-    draw_result_flag = DrawResult.find(1)
+    draw_result_flag = DrawResult.where(id: 1)[0]
     draw_result_flag.result_flag = 0
     draw_result_flag.save
   end
   
   #抽選実行済み判断用フラグを上げる
   def self.result_flag_on
-    draw_result_flag = DrawResult.find(1)
+    draw_result_flag = DrawResult.where(id: 1)[0]
     draw_result_flag.result_flag = 1
     draw_result_flag.save
   end

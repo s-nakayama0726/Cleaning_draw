@@ -24,7 +24,7 @@ class UserController < ApplicationController
   end
   
   def destroy
-    user = CleaningEntry.find(params[:id])
+    user = CleaningEntry.where(id: params[:id])[0]
     message = user.name+"さんの情報が削除されました"
     user.destroy
 
