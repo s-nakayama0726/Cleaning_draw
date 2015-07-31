@@ -7,8 +7,8 @@ class CleaningEntry < ActiveRecord::Base
   validates_format_of :user_id, with: /\A[a-z0-9]+\z/i, :message => "エラー　IDは半角英数字で登録してください"
   validates_format_of :pass, with: /\A[a-z0-9]+\z/i, :message => "エラー　パスワードは半角英数字で登録してください"
   validate :user_over_check
-   
-  before_save :draw_number_deal_for_create, :encrypt_pass
+  
+  before_save :encrypt_pass
   after_find :decrypt_pass
   
   #参加しているかどうかの判断用定数

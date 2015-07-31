@@ -5,6 +5,7 @@ class UserController < ApplicationController
   
   def create
     user = CleaningEntry.new(user_params)
+    user.draw_number_deal_for_create
     user.join_flag = 0
     user.join_count = 0
     user.hit_count = 0

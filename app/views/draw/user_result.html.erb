@@ -12,7 +12,7 @@
 			<% if user_info.join_flag == 1 %>
 				<tr>
 					<td align="center"><%= user_info.name %></td><td align="center"><%= user_info.draw_no %></td>
-					<td align="center"><%= user_info.rate %>%</td>
+					<td align="center"><%= "%.0f" % user_info.rate %>%</td>
 				<td>
 				<% if user_info.id == session[:id] %>
 					<strong>←you!</strong>
