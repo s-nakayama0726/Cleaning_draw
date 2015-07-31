@@ -72,6 +72,7 @@ class CleaningEntry < ActiveRecord::Base
   end
   
   def hit_rate_get
+    return self.rate = 0 if self.join_count == 0 if self.hit_count == 0
     self.rate = self.hit_count.to_f / self.join_count.to_f * 100
   end
   
