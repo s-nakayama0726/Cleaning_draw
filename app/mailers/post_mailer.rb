@@ -1,5 +1,4 @@
 class PostMailer < ActionMailer::Base
-  default from: "from@example.com"
   
   def post_email(address)
     draw_result = DrawResult.find(1)
