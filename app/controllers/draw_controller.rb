@@ -31,7 +31,7 @@ class DrawController < ApplicationController
         vacuum_id, wipe_id = CleaningEntry.draw_action
         DrawResult.result_record(vacuum_id, wipe_id)
         CleaningEntry.hit_count_add(vacuum_id, wipe_id) 
-        # mail_action
+        mail_action
       end
     end   
   end
@@ -108,7 +108,7 @@ class DrawController < ApplicationController
         DrawResult.result_record(vacuum_id, wipe_id)
         vacuum_id, wipe_id = DrawResult.duty_check
         CleaningEntry.hit_count_add(vacuum_id, wipe_id)
-        # mail_action
+        mail_action
         @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(vacuum_id, wipe_id)
       else
         vacuum_id, wipe_id = DrawResult.duty_check
