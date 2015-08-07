@@ -79,11 +79,11 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  address:               'smtp.gmail.com',
+  address:               'ankh-systems.com',
   port:                  587,
   domain:                '',
-  user_name:             'shingood98@gmail.com',
-  password:              'hikariww2000',
+  user_name:             's-nakayama@ankh-systems.co.jp',
+  password:              'Beekay39',
   authentication:        'plain',
   enable_starttls_auto:  true
   }
