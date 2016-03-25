@@ -52,11 +52,11 @@ class DrawController < ApplicationController
           if draw_result.draw_done_check
           @from_index_flag = 1
           @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(draw_result.vacuum_id, draw_result.wipe_id)
-          render "master_draw_result" and return
+          render "master_draw_result_sc" and return
           end
         end
         if @entry.join_flag == 1
-          render 'user_already_result' and return
+          render 'user_already_result_sc' and return
         end
       else
         flash.now[:notice] = "IDまたはパスワードが違います"
@@ -116,7 +116,8 @@ class DrawController < ApplicationController
       end
     end
     
-    render 'master_draw_result'
+#    render 'master_draw_result'
+    render 'master_draw_result_sc'
   end
   
   def logout
