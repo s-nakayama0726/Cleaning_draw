@@ -13,7 +13,9 @@
 		<div class="inner">
 		</div>
 	</header>
-	
+	<% if request.path_info == "/draw/user_show"%>
+		<h1 align="center">レッツスクラッチ！！</h1>
+	<% end %>
 	<div id="main">
 		<%= yield %>
 	</div>

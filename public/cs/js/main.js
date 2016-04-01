@@ -29,9 +29,9 @@ $(function(){
     }else{
         lotString = "がんばれ～";
     }
-    ctx.fillText(lotString, 300,400 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
+    ctx.fillText(lotString, 300,475 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
     ctx.fillStyle = 'blue';
-    ctx.fillText(lotString, 300,250 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
+    ctx.fillText(lotString, 300,300 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
 //    ctx.strokeText(lotString, Math.floor(Math.random() * 190)+10,Math.floor(Math.random() * 140)+10 ,Math.floor(Math.random() * 190)+10 ); // 縁取り文字を描画
 
     // 前面レイヤ
