@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>お掃除抽選アプリ</title>
+  <title>お掃除抽選アプリ </title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -13,7 +13,7 @@
 		<div class="inner">
 		</div>
 	</header>
-	<% if request.path_info == "/draw/user_show"%>
+	<% if @scrach_text_flag == 1 %>
 		<h1 align="center">レッツスクラッチ！！</h1>
 	<% end %>
 	<div id="main">

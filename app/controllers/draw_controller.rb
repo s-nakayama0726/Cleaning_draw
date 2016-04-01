@@ -50,13 +50,14 @@ class DrawController < ApplicationController
         #既に抽選が完了していれば、抽選結果を表示させる
         if draw_result = DrawResult.find_by_id(1)
           if draw_result.draw_done_check
+          @scrach_text_flag = 1
           @from_index_flag = 1
           @vacuum_cleaner_person, @wipe_person = CleaningEntry.result_check(draw_result.vacuum_id, draw_result.wipe_id)
           render "master_draw_result_sc" and return
           end
         end
         if @entry.join_flag == 1
-          render 'user_already_result_sc' and return
+          render 'user_already_result' and return
         end
       else
         flash.now[:notice] = "IDまたはパスワードが違います"
