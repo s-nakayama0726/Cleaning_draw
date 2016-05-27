@@ -21,14 +21,6 @@ $(function(){
     ctx.textAlign = 'center';
     ctx.fillStyle = 'red';
     
-    lot = Math.floor(Math.random() * 3);
-    if(lot == 0){
-        lotString = "おめでとうございます";
-    }else if(lot == 1){
-        lotString = "おめでとう～";
-    }else{
-        lotString = "がんばれ～";
-    }
     ctx.fillText(lotString, 300,475 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
     ctx.fillStyle = 'blue';
     ctx.fillText(lotString, 300,300 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
