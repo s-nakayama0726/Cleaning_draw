@@ -13,7 +13,6 @@ $(function(){
         lot,
         borderWidth = 10,
         isDrawing = false;
-        lotString = null;
 
     // 背面レイヤ
     // 文字の描画
@@ -21,11 +20,6 @@ $(function(){
     ctx.textAlign = 'center';
     ctx.fillStyle = 'red';
     
-    ctx.fillText(lotString, 300,475 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
-    ctx.fillStyle = 'blue';
-    ctx.fillText(lotString, 300,300 ,Math.floor(Math.random() * 500) ); // (文字,始点x,y,最大横幅)に文字を描画
-//    ctx.strokeText(lotString, Math.floor(Math.random() * 190)+10,Math.floor(Math.random() * 140)+10 ,Math.floor(Math.random() * 190)+10 ); // 縁取り文字を描画
-
     // 前面レイヤ
     // 四角形の描画
     ctx2.fillStyle = "#999";
@@ -42,11 +36,11 @@ $(function(){
             y = e.pageY - $(this).offset().top - borderWidth;
             ctx2.beginPath();
             ctx2.moveTo(x, y);
-            ctx2.clearRect(x,y,Math.floor(Math.random() * 30),10); // 切り抜き
+            ctx2.clearRect(x,y,150,150); // 切り抜き
             startX = x;
             startY = y;
         })
         .mouseup(function(e){
             isDrawing = false;
-        })
+        });
 });
