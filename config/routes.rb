@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   post "draw/user_show" => "draw#user_show"
   get 'draw/user_result'
   get 'draw/user_already_result'
+  get 'draw/already_draw_user_list'
   get "draw/user_index"
   get 'draw/master_top'
   get 'draw/master_draw_result'

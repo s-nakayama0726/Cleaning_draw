@@ -1,0 +1,11 @@
+<span style="text-decoration : underline">現在の抽選参加者</span><br>（ <%= @all_users_number %>人中<%= @already_entry_users_number %>人受け付け済み）<br><br>
+	<table align="center" border="1">
+		<tr><td align="center"><strong>名前</strong></td><td align="center"><strong>抽選番号</strong></td><td align="center"><strong>当選レート</strong></td></tr>
+		<% @users_draw_info.each do |user_info| %>
+			<% if user_info.join_flag == 1 %>
+				<tr>
+					<td align="center"><%= user_info.name %></td><td align="center"><%= user_info.draw_no %></td><td align="center"><%= "%.0f" % user_info.rate %>%</td>
+				</tr>
+			<% end %>
+		<% end %>
+	</table>

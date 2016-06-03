@@ -1,7 +1,11 @@
 #coding: utf-8
 
 class DrawController < ApplicationController
-  before_action :set_users_draw_info_get, only: [:user_index, :user_result, :user_show]
+  before_action :set_users_draw_info_get, only: [:user_index, :user_result, :user_show, :already_draw_user_list]
+  
+  def already_draw_user_list
+    @all_users_number, @already_entry_users_number = CleaningEntry.user_count
+  end
   
   def user_index
     #ログイン判断（session[:id]に値が入っているかどうか）

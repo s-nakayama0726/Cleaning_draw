@@ -20,7 +20,11 @@
 	<%= button_to 'ユーザー管理', user_index_path, method: :get %>
 	<br>
 	※ユーザー管理画面に遷移する
-	<br><br><br><br>
+	<br><br>
+	<%= button_to '抽選済みユーザーリスト', draw_already_draw_user_list_path, method: :get %>
+	<br>
+	※抽選済みのユーザーリストを見る
+	<br><br><br>
 	<%= button_to '戻る', draw_user_index_path, method: :get %><br>
 	※お掃除抽選アプリトップ画面に遷移する
 </div>
