@@ -47,7 +47,9 @@ class CleaningEntry < ActiveRecord::Base
   def self.draw_action
     ready_users = CleaningEntry.select(:id, :pass, :join_count, :hit_count).joined
     draw_result_arr = ready_users.sample(2)
-    return draw_result_arr[0].id, draw_result_arr[1].id
+    
+    #return draw_result_arr[1].id, draw_result_arr[1].id
+    return CleaningEntry.maximum(:draw_no), CleaningEntry.minimum(:draw_no)
   end
    
   #登録されているユーザーに抽選番号を割り当てる

@@ -79,7 +79,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-  address:               '153.122.136.58',
+  address:               'mail.ankh-systems.co.jp',
   port:                  587,
   domain:                'ankh-systems.com',
   user_name:             's-nakayama@ankh-systems.co.jp',
