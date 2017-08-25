@@ -11,7 +11,7 @@
 		<% @users_draw_info.each do |user_info| %>
 			<% if user_info.join_flag == 1 %>
 				<tr>
-					<td align="center"><%= user_info.name %></td><td align="center"><p id="list" <%if user_info.id == session[:id] %> style="display: none;" <%end%> ><%= user_info.draw_no %></p></td>
+					<td align="center"><%= user_info.name %></td><td align="center"><p id="list<%=user_info.id%>" <%if user_info.id == session[:id] %> style="display: none;" <%end%> ><%= user_info.draw_no %></p></td>
 					<td align="center"><%= "%.0f" % user_info.rate %>%</td>
 				<td>
 				<% if user_info.id == session[:id] %>
@@ -37,7 +37,7 @@ if(num <= tgt){
     num++;
     if(num > tgt){
         $('#desu').html("です。");
-        $('#list').show();
+        $('#list<%=session[:id]%>').show();
     }
 }
 },Math.random()*500);
